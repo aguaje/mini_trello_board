@@ -6,6 +6,17 @@ Uses:
 - DynamoDB Local
 - React / Hooks + Tailwind CSS / Apollo Client GraphQL in the frontend
 
+
+## Todos
+
+- Add update datetime stamp when editing things in the database
+- Ability to delete or edit columns
+- Ability to move columns
+- Improve implementation of lexorank
+  - Improve calculations of ranks for new cards
+  - Implement reordering by moving to a new bucket
+
+
 # Running
 Bring up the docker container with DynamoDB Local
 `docker-compose up -d`

@@ -114,6 +114,28 @@ class DynamoDBClient:
         self.table.put_item(Item=item)
         return item
 
+    def update_card_content(self, card_id: str, content: str, board_name: str = 'default'):
+        card_key = {
+            'PK': f'BOARD#{board_name}',
+            'SK': f'CARD#{card_id}'
+        }
+
+        response = self.table.update_item(
+            Key=card_key,
+            UpdateExpression='SET content = :content',
+            ExpressionAttributeValues={
+                ':content': content
+            },
+            ReturnValues='ALL_NEW'  # This returns the item with all its attributes after the update
+        )
+
+        updated_item = response.get('Attributes', {})
+
+        return Card(
+            id=card_id,
+            content=updated_item.get('content'),
+        )
+
     def delete_card(self, card_id, board_name='default'):
         card_key = {
             'PK': f'BOARD#{board_name}',

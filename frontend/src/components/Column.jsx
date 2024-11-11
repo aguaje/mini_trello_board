@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from './Card';
 
-export function Column({ id, title, cards, onAddCard, onDeleteCard }) {
+export function Column({ id, title, cards, onAddCard, onDeleteCard, onUpdateCardContent }) {
     const [isAddingCard, setIsAddingCard] = useState(false);
     const [newCardContent, setNewCardContent] = useState('');
   
@@ -31,6 +31,7 @@ export function Column({ id, title, cards, onAddCard, onDeleteCard }) {
                 columnId={id}
                 content={card.content}
                 onDeleteCard={() => onDeleteCard(card.id)}
+                onUpdateCardContent={onUpdateCardContent}
               />
             ))}
           </div>
