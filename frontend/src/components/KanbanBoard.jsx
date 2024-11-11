@@ -1,69 +1,14 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { Column } from './Column';
+import { GET_BOARD } from '../graphql/queries';
+import { 
+  CREATE_CARD, 
+  CREATE_COLUMN, 
+  UPDATE_CARD_CONTENT, 
+  DELETE_CARD 
+} from '../graphql/mutations';
 
-const GET_BOARD = gql`
-    query GetBoard($boardName: String) {
-        board(boardName: $boardName) {
-            id
-            title
-            columns {
-                id
-                title
-                position
-                cards {
-                    id
-                    content
-                    rank
-                }
-            }
-        }
-    }
-`;
-
-const CREATE_CARD = gql`
-  mutation CreateCard($input: CreateCardInput!) {
-    createCard(input: $input) {
-      content
-      columnId
-    }
-  }
-`;
-
-const UPDATE_CARD_CONTENT = gql`
-    mutation UpdateCardContent($cardId: String!, $newContent: String!, $boardName: String) {
-        updateCardContent(cardId: $cardId, content: $newContent, boardName: $boardName) {
-            id
-            content
-        }
-    }
-`;
-
-const DELETE_CARD = gql`
-    mutation DeleteCard($cardId: String!, $boardName: String) {
-        deleteCard(cardId: $cardId, boardName: $boardName) {
-            id
-            content
-            rank
-        }
-    }
-`;
-
-const CREATE_COLUMN = gql`
-  mutation CreateColumn($input: CreateColumnInput!) {
-    createColumn(input: $input) {
-      id
-      title
-      position
-      cards {
-        id
-        content
-        columnId
-        rank
-      }
-    }
-  }
-`;
 
 export function KanbanBoard() {
     const [isAddingColumn, setIsAddingColumn] = useState(false);

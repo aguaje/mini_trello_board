@@ -16,11 +16,6 @@ export function Column({ id, title, cards, onAddCard, onDeleteCard, onUpdateCard
       <div className="flex-none w-[280px] bg-gray-50 rounded-lg p-3 mx-2 border border-gray-200">
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-semibold text-gray-700">{title}</h2>
-          {/* <button className="text-gray-400 hover:text-gray-600">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-            </svg>
-          </button> */}
         </div>
   
           <div className="flex flex-col gap-2 min-h-[200px] overflow-y-auto max-h-[calc(100vh-200px)]">
