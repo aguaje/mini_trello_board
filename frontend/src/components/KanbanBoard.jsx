@@ -30,6 +30,16 @@ const CREATE_CARD = gql`
   }
 `;
 
+const DELETE_CARD = gql`
+    mutation DeleteCard($cardId: String!, $boardName: String) {
+        deleteCard(cardId: $cardId, boardName: $boardName) {
+            id
+            content
+            rank
+        }
+    }
+`;
+
 const CREATE_COLUMN = gql`
   mutation CreateColumn($input: CreateColumnInput!) {
     createColumn(input: $input) {
@@ -52,6 +62,7 @@ export function KanbanBoard() {
     const { loading, error, data } = useQuery(GET_BOARD);
     const [createCard] = useMutation(CREATE_CARD);
     const [createColumn] = useMutation(CREATE_COLUMN);
+    const [deleteCard] = useMutation(DELETE_CARD);
   
   
     if (loading) return <div className="p-8">Loading...</div>;
@@ -74,6 +85,19 @@ export function KanbanBoard() {
       } catch (error) {
         console.error('Error creating card:', error);
       }
+    };
+
+    const handleDeleteCard = async (id) => {
+        try {
+            await deleteCard({
+                variables: {
+                    cardId: id
+                },
+                refetchQueries: [{ query: GET_BOARD }]
+            });
+        } catch (error) {
+            console.error('Error deleting card: ', error);
+        }
     };
 
     const handleAddColumn = async () => {
@@ -149,6 +173,7 @@ export function KanbanBoard() {
             title={column.title}
             cards={column.cards}
             onAddCard={handleAddCard}
+            onDeleteCard={handleDeleteCard}
             />
         ))}
         </div>

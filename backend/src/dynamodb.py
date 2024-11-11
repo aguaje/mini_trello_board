@@ -93,7 +93,7 @@ class DynamoDBClient:
             columns=sorted_columns
         )
 
-    async def create_card(self, data):
+    def create_card(self, data):
         column_id = data['column_id']
         highest_rank_in_column = self.get_highest_rank_in_column(column_id)
         next_rank = get_next_ranking(highest_rank_in_column)
@@ -114,7 +114,33 @@ class DynamoDBClient:
         self.table.put_item(Item=item)
         return item
 
-    async def create_column(self, data):
+    def delete_card(self, card_id, board_name='default'):
+        card_key = {
+            'PK': f'BOARD#{board_name}',
+            'SK': f'CARD#{card_id}'
+        }
+        card_response = self.table.get_item(
+            Key=card_key
+        )
+
+        if 'Item' not in card_response:
+            return None
+
+        card_data = card_response['Item']
+
+        # Delete the item
+        self.table.delete_item(
+            Key=card_key
+        )
+
+        # Return the deleted card data
+        return Card(
+            id=card_data['id'],
+            content=card_data['content'],
+            rank=card_data['rank']
+        )
+
+    def create_column(self, data):
         board_name = data.get('board_name', 'default')
 
         column_id = str(uuid.uuid4())

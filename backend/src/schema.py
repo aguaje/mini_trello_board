@@ -63,6 +63,22 @@ class CreateCard(graphene.Mutation):
             return None
 
 
+class DeleteCard(graphene.Mutation):
+    class Arguments:
+        card_id = graphene.String(required=True)
+        board_name = graphene.String(default_value="default")
+
+    Output = Card
+
+    def mutate(self, info, card_id, board_name):
+        try:
+            db_client = info.context["db_client"]
+            return db_client.delete_card(card_id, board_name)
+        except Exception as e:
+            logger.error(f"Error deleting card {card_id}: {e}")
+            return None
+
+
 class CreateColumn(graphene.Mutation):
     class Arguments:
         input = CreateColumnInput(required=True)
@@ -81,3 +97,4 @@ class CreateColumn(graphene.Mutation):
 class Mutation(graphene.ObjectType):
     create_card = CreateCard.Field()
     create_column = CreateColumn.Field()
+    delete_card = DeleteCard.Field()

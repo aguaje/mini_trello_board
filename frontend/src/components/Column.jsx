@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Card } from './Card';
 
-export function Column({ id, title, cards, onAddCard }) {
+export function Column({ id, title, cards, onAddCard, onDeleteCard }) {
     const [isAddingCard, setIsAddingCard] = useState(false);
     const [newCardContent, setNewCardContent] = useState('');
   
-    const handleSubmit = (e) => {
+    const handleAddCardSubmit = (e) => {
       e.preventDefault();
       onAddCard(id, newCardContent);
       setNewCardContent('');
@@ -30,6 +30,7 @@ export function Column({ id, title, cards, onAddCard }) {
                 id={card.id}
                 columnId={id}
                 content={card.content}
+                onDeleteCard={() => onDeleteCard(card.id)}
               />
             ))}
           </div>
@@ -46,7 +47,7 @@ export function Column({ id, title, cards, onAddCard }) {
             />
             <div className="flex gap-2 mt-2">
               <button
-                onClick={handleSubmit}
+                onClick={handleAddCardSubmit}
                 className="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
               >
                 Add card
